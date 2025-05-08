@@ -33,7 +33,7 @@ class CartItem extends Model
     }
 
     /**
-     * Get the subtotal for this cart item
+     * Get the subtotal for this cart item.
      */
     public function getSubtotal(): float
     {

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('header', 'Dashboard')
+@section('header', 'Bảng điều khiển')
 
 @section('content')
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -8,7 +8,7 @@
     <div class="bg-white rounded-lg shadow p-6">
         <div class="flex items-center justify-between">
             <div>
-                <h3 class="text-lg font-medium text-gray-900">Total Products</h3>
+                <h3 class="text-lg font-medium text-gray-900">Tổng số sản phẩm</h3>
                 <p class="mt-1 text-3xl font-semibold text-indigo-600">{{ \App\Models\Product::count() }}</p>
             </div>
             <div class="bg-indigo-100 p-3 rounded-full">
@@ -23,7 +23,7 @@
     <div class="bg-white rounded-lg shadow p-6">
         <div class="flex items-center justify-between">
             <div>
-                <h3 class="text-lg font-medium text-gray-900">Total Categories</h3>
+                <h3 class="text-lg font-medium text-gray-900">Tổng số danh mục</h3>
                 <p class="mt-1 text-3xl font-semibold text-green-600">{{ \App\Models\Category::count() }}</p>
             </div>
             <div class="bg-green-100 p-3 rounded-full">
@@ -38,7 +38,7 @@
     <div class="bg-white rounded-lg shadow p-6">
         <div class="flex items-center justify-between">
             <div>
-                <h3 class="text-lg font-medium text-gray-900">Total Orders</h3>
+                <h3 class="text-lg font-medium text-gray-900">Tổng số đơn hàng</h3>
                 <p class="mt-1 text-3xl font-semibold text-blue-600">{{ \App\Models\Order::count() }}</p>
             </div>
             <div class="bg-blue-100 p-3 rounded-full">
@@ -53,7 +53,7 @@
     <div class="bg-white rounded-lg shadow p-6">
         <div class="flex items-center justify-between">
             <div>
-                <h3 class="text-lg font-medium text-gray-900">Total Users</h3>
+                <h3 class="text-lg font-medium text-gray-900">Tổng số người dùng</h3>
                 <p class="mt-1 text-3xl font-semibold text-yellow-600">{{ \App\Models\User::count() }}</p>
             </div>
             <div class="bg-yellow-100 p-3 rounded-full">
@@ -67,16 +67,16 @@
 
 <!-- Recent Orders -->
 <div class="mt-8">
-    <h2 class="text-lg font-medium text-gray-900 mb-4">Recent Orders</h2>
+    <h2 class="text-lg font-medium text-gray-900 mb-4">Đơn hàng gần đây</h2>
     <div class="bg-white shadow rounded-lg overflow-hidden">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã đơn hàng</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Khách hàng</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tổng cộng</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">

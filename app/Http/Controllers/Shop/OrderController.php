@@ -13,7 +13,7 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::where('user_id', auth()->id())
-            ->with(['items.product'])
+            ->with(['orderItems.product'])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -25,6 +25,8 @@ class OrderController extends Controller
         if ($order->user_id !== auth()->id()) {
             abort(403);
         }
+
+        $order->load('orderItems.product');
 
         return view('shop.orders.show', compact('order'));
     }
@@ -62,13 +64,13 @@ class OrderController extends Controller
                 'status' => 'pending'
             ]);
 
-            foreach ($cartItems as $item) {
-                $order->items()->create([
-                    'product_id' => $item->product_id,
-                    'quantity' => $item->quantity,
-                    'price' => $item->product->price
-                ]);
-            }
+foreach ($cartItems as $item) {
+    $order->orderItems()->create([
+        'product_id' => $item->product_id,
+        'quantity' => $item->quantity,
+        'price' => $item->product->price
+    ]);
+}
 
             // Clear cart
             CartItem::where('user_id', auth()->id())->delete();

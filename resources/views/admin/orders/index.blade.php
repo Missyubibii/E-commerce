@@ -1,23 +1,23 @@
 @extends('layouts.app')
 
-@section('title', 'Orders')
+@section('title', 'Đơn hàng')
 
 @section('content')
     <div class="bg-white shadow rounded-lg">
         <div class="px-4 py-5 sm:px-6">
-            <h1 class="text-2xl font-bold text-gray-900">Orders</h1>
+            <h1 class="text-2xl font-bold text-gray-900">Đơn hàng</h1>
         </div>
 
         <div class="border-t border-gray-200">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Amount</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã đơn hàng</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Khách hàng</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tổng tiền</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hành động</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -47,14 +47,14 @@
                                 {{ $order->created_at->format('M d, Y H:i') }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="{{ route('admin.orders.show', $order) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">View</a>
+                                <a href="{{ route('admin.orders.show', $order) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Xem</a>
                                 @if($order->status === 'pending')
                                     <form action="{{ route('admin.orders.update-status', $order) }}" method="POST" class="inline">
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="status" value="processing">
                                         <button type="submit" class="text-yellow-600 hover:text-yellow-900 mr-3">
-                                            Process
+                                            Xử lý
                                         </button>
                                     </form>
                                 @endif
@@ -64,7 +64,7 @@
                                         @method('PATCH')
                                         <input type="hidden" name="status" value="completed">
                                         <button type="submit" class="text-green-600 hover:text-green-900 mr-3">
-                                            Complete
+                                            Hoàn thành
                                         </button>
                                     </form>
                                 @endif
@@ -73,8 +73,8 @@
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="status" value="cancelled">
-                                        <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure you want to cancel this order?')">
-                                            Cancel
+                                        <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')">
+                                            Hủy bỏ
                                         </button>
                                     </form>
                                 @endif

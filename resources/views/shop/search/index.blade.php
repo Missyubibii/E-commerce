@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Search Results')
+@section('title', 'Kết quả tìm kiếm')
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -8,7 +8,7 @@
         <!-- Filters Sidebar -->
         <div class="lg:w-1/4">
             <div class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-lg font-semibold mb-4">Filters</h2>
+                <h2 class="text-lg font-semibold mb-4">Bộ lọc</h2>
                 <form action="{{ route('search') }}" method="GET" class="space-y-6">
                     @if($query)
                         <input type="hidden" name="q" value="{{ $query }}">
@@ -16,7 +16,7 @@
 
                     <!-- Categories -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Categories</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Danh mục</label>
                         <div class="space-y-2">
                             @foreach($categories as $category)
                                 <div class="flex items-center">
@@ -31,34 +31,34 @@
 
                     <!-- Price Range -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Price Range</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Khoảng giá</label>
                         <div class="flex items-center space-x-2">
                             <input type="number" name="min_price" value="{{ $minPrice }}" min="0"
-                                placeholder="Min"
+                                placeholder="Tối thiểu"
                                 class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                            <span class="text-gray-500">to</span>
+                            <span class="text-gray-500">đến</span>
                             <input type="number" name="max_price" value="{{ $maxPrice }}" min="0"
-                                placeholder="Max"
+                                placeholder="Tối đa"
                                 class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                         </div>
                     </div>
 
                     <!-- Sort -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Sắp xếp theo</label>
                         <select name="sort"
                             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                            <option value="default" {{ $sort == 'default' ? 'selected' : '' }}>Default</option>
-                            <option value="price_asc" {{ $sort == 'price_asc' ? 'selected' : '' }}>Price: Low to High</option>
-                            <option value="price_desc" {{ $sort == 'price_desc' ? 'selected' : '' }}>Price: High to Low</option>
-                            <option value="newest" {{ $sort == 'newest' ? 'selected' : '' }}>Newest First</option>
-                            <option value="rating" {{ $sort == 'rating' ? 'selected' : '' }}>Average Rating</option>
+                            <option value="default" {{ $sort == 'default' ? 'selected' : '' }}>Mặc định</option>
+                            <option value="price_asc" {{ $sort == 'price_asc' ? 'selected' : '' }}>Giá tăng dần</option>
+                            <option value="price_desc" {{ $sort == 'price_desc' ? 'selected' : '' }}>Giá giảm dần</option>
+                            <option value="newest" {{ $sort == 'newest' ? 'selected' : '' }}>Mới nhất</option>
+                            <option value="rating" {{ $sort == 'rating' ? 'selected' : '' }}>Đánh giá trung bình</option>
                         </select>
                     </div>
 
                     <button type="submit"
                         class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-150">
-                        Apply Filters
+                        Áp dụng bộ lọc
                     </button>
                 </form>
             </div>
@@ -67,7 +67,7 @@
         <!-- Results -->
         <div class="lg:w-3/4">
             @if($query)
-                <h2 class="text-2xl font-bold mb-6">Search Results for "{{ $query }}"</h2>
+                <h2 class="text-2xl font-bold mb-6">Kết quả tìm kiếm cho "{{ $query }}"</h2>
             @endif
 
             @if($products->isEmpty())
@@ -76,15 +76,15 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <h3 class="mt-4 text-lg font-medium text-gray-900">No products found</h3>
-                    <p class="mt-2 text-gray-500">Try adjusting your search or filters to find what you're looking for.</p>
+                    <h3 class="mt-4 text-lg font-medium text-gray-900">Không tìm thấy sản phẩm</h3>
+                    <p class="mt-2 text-gray-500">Hãy thử thay đổi từ khóa hoặc bộ lọc để tìm sản phẩm phù hợp hơn.</p>
                 </div>
             @else
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach($products as $product)
                         <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                             @if($product->image)
-                                <img src="{{ asset('storage/' . $product->image) }}"
+                                <img src="{{ Storage::url('products/' . $product->image) }}"
                                     alt="{{ $product->name }}"
                                     class="w-full h-48 object-cover">
                             @endif
@@ -105,7 +105,7 @@
 
                                 <div class="mt-4 space-y-3">
                                     <div class="flex items-center justify-between">
-                                        <span class="text-xl font-bold text-gray-900">${{ number_format($product->price, 2) }}</span>
+                                        <span class="text-xl font-bold text-gray-900">{{ number_format($product->price, 2) }}₫</span>
                                         <div class="flex space-x-2">
                                             <!-- Comparison Toggle -->
                                             <form action="{{ route('comparison.toggle', $product) }}" method="POST">
@@ -128,27 +128,24 @@
                                                     <svg class="w-6 h-6" fill="{{ auth()->check() && auth()->user()->hasWishlisted($product) ? 'currentColor' : 'none' }}"
                                                         stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                                            d="M12 21c-4.973 0-9-4.029-9-9s4.027-9 9-9 9 4.029 9 9-4.027 9-9 9zm0-16a7 7 0 100 14 7 7 0 000-14z" />
                                                     </svg>
                                                 </button>
                                             </form>
                                         </div>
                                     </div>
-                                    <form action="{{ route('cart.add', $product) }}" method="POST">
-                                        @csrf
-                                        <button type="submit"
-                                            class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-150">
-                                            Add to Cart
-                                        </button>
-                                    </form>
+
+                                    <button type="submit"
+                                        class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-150">
+                                        Thêm vào giỏ hàng
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     @endforeach
                 </div>
 
-                <!-- Pagination -->
-                <div class="mt-8">
+                <div class="mt-6">
                     {{ $products->links() }}
                 </div>
             @endif
@@ -156,16 +153,3 @@
     </div>
 </div>
 @endsection
-
-@push('scripts')
-<script>
-    // Handle category radio buttons
-    document.querySelectorAll('input[name="category"]').forEach(radio => {
-        radio.addEventListener('change', () => {
-            if (!radio.checked) {
-                radio.closest('form').submit();
-            }
-        });
-    });
-</script>
-@endpush

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name', 'Laravel E-Commerce') }} - @yield('title')</title>
+    <title>E - Travis - @yield('title')</title>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -14,20 +14,18 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0">
                     <a href="{{ route('home') }}" class="flex items-center">
-                        <span class="text-2xl font-bold text-white hover:text-blue-100 transition-all duration-150">{{ config('app.name', 'Laravel E-Commerce') }}</span>
+                        <span class="text-2xl font-bold text-white hover:text-blue-100 transition-all duration-150">E - Travis</span>
                     </a>
                 </div>
 
                 <!-- Main Navigation -->
-                <div class="hidden sm:ml-6 sm:flex sm:items-center sm:space-x-4">
-                    <a href="{{ route('home') }}" class="text-blue-100 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-150 hover:bg-blue-500">Home</a>
-
+<div class="hidden sm:ml-6 sm:flex sm:items-center sm:space-x-4">
                     <!-- Search Bar -->
                     <div class="relative ml-4" x-data="{ query: '' }">
                         <form action="{{ route('search') }}" method="GET" class="flex items-center">
                             <input type="text" name="q" x-model="query"
                                 class="w-64 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900"
-                                placeholder="Search products..."
+                                placeholder="Tìm kiếm sản phẩm..."
                                 @input.debounce.300ms="
                                     if (query.length >= 2) {
                                         fetch(`/search/suggestions?q=${query}`)
@@ -48,19 +46,17 @@
                                 "
                                 @click.away="$refs.suggestions.classList.add('hidden')"
                             >
-                            <button type="submit" class="ml-2 p-2 text-blue-100 hover:text-white rounded-full hover:bg-blue-500 transition duration-150">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
-                            </button>
+                            <button type="submit" class="ml-2 p-2 text-blue-100 hover:text-white rounded-full hover:bg-blue-500 transition duration-150"></button>
                         </form>
                         <div x-ref="suggestions" class="absolute z-50 w-full mt-1 bg-white rounded-md shadow-lg hidden"></div>
                     </div>
 
+                    <a href="{{ route('home') }}" class="text-blue-100 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-150 hover:bg-blue-500">Trang chủ</a>
+
                     <!-- Categories Dropdown -->
                     <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open" @click.away="open = false" class="text-blue-100 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-150 hover:bg-blue-500 inline-flex items-center">
-                            Categories
+                            Danh mục
                             <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                             </svg>
@@ -126,20 +122,20 @@
                             <div x-show="open" x-transition class="absolute right-0 z-50 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                                 <div class="py-1">
                                     <div class="px-4 py-2 text-xs text-gray-400">{{ auth()->user()->name }}</div>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account Settings</a>
-                                    <a href="{{ route('orders.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Orders</a>
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            Logout
-                                        </button>
-                                    </form>
+                                    <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cài đặt tài khoản</a>
+                                    <a href="{{ route('orders.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Đơn hàng của tôi</a>
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                Đăng xuất
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
                         </div>
                     @else
-                        <a href="{{ route('login') }}" class="text-blue-100 hover:text-white px-4 py-2 rounded-md text-sm font-medium transition duration-150 hover:bg-blue-500">Login</a>
-                        <a href="{{ route('register') }}" class="text-blue-100 hover:text-white ml-4 px-4 py-2 rounded-md text-sm font-medium bg-blue-500 hover:bg-blue-600 transition duration-150">Register</a>
+                        <a href="{{ route('login') }}" class="text-blue-100 hover:text-white px-4 py-2 rounded-md text-sm font-medium transition duration-150 hover:bg-blue-500">Đăng nhập</a>
+                        <a href="{{ route('register') }}" class="text-blue-100 hover:text-white ml-4 px-4 py-2 rounded-md text-sm font-medium bg-blue-500 hover:bg-blue-600 transition duration-150">Đăng ký</a>
                     @endauth
                 </div>
 
@@ -182,25 +178,23 @@
                     <!-- Mobile User Menu -->
                     <div class="border-t border-blue-700 mt-2 pt-2">
                         <a href="{{ route('profile.edit') }}" class="block p-2 text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">
-                            Account Settings
+                            Cài đặt tài khoản
                         </a>
-                        <a href="{{ route('orders.index') }}" class="block p-2 text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">
-                            My Orders
-                        </a>
-                        <a href="{{ route('cart.index') }}" class="block p-2 text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">
-                            Shopping Cart
+                        <a href="{{ route('orders.index') }}" class="block p-2 text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">Đơn hàng của tôi</a>
+<a href="{{ route('cart.index') }}" class="block p-2 text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">
+                            Giỏ hàng
                         </a>
                         <form method="POST" action="{{ route('logout') }}" class="block">
                             @csrf
                             <button type="submit" class="w-full text-left p-2 text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">
-                                Logout
+                                Đăng xuất
                             </button>
                         </form>
                     </div>
                 @else
                     <div class="border-t border-blue-700 mt-2 pt-2">
-                        <a href="{{ route('login') }}" class="block p-2 text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">Login</a>
-                        <a href="{{ route('register') }}" class="block p-2 text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">Register</a>
+                        <a href="{{ route('login') }}" class="block p-2 text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">Đăng nhập</a>
+                        <a href="{{ route('register') }}" class="block p-2 text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">Đăng ký</a>
                     </div>
                 @endauth
             </div>

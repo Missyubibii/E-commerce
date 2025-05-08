@@ -12,12 +12,17 @@ class CheckoutController extends Controller
 {
     public function show()
     {
-        $cartItems = CartItem::where('user_id', auth()->id())->with('product')->get();
-        $total = $cartItems->sum(function($item) {
-            return $item->product->price * $item->quantity;
-        });
+        try {
+            $cartItems = CartItem::where('user_id', auth()->id())->with('product')->get();
+            $total = $cartItems->sum(function($item) {
+                return $item->product->price * $item->quantity;
+            });
 
-        return view('shop.checkout', compact('cartItems', 'total'));
+            return view('shop.checkout', compact('cartItems', 'total'));
+        } catch (\Exception $e) {
+            \Log::error('Error retrieving cart items for checkout: ' . $e->getMessage());
+            return redirect()->route('cart.index')->with('error', 'Sorry, there was an error retrieving your cart items. Please try again.');
+        }
     }
 
     public function process(Request $request)
@@ -42,8 +47,9 @@ class CheckoutController extends Controller
 
             // Validate stock availability
             foreach ($cartItems as $item) {
-                if ($item->quantity > $item->product->stock) {
-                    throw new \Exception("Sorry, '{$item->product->name}' only has {$item->product->stock} items in stock.");
+                \Log::info("Product: {$item->product->name}, Stock: {$item->product->stock_quantity}, Quantity: {$item->quantity}");
+                if ($item->quantity > $item->product->stock_quantity) {
+                    throw new \Exception("Sorry, '{$item->product->name}' only has {$item->product->stock_quantity} items in stock.");
                 }
             }
 
@@ -59,19 +65,20 @@ class CheckoutController extends Controller
                 'shipping_phone' => $request->phone,
                 'shipping_name' => $request->full_name,
                 'payment_method' => $request->payment_method,
-                'status' => 'pending'
+                'status' => 'pending',
+                'phone_number' => $request->phone,
             ]);
 
             // Add items and update stock
             foreach ($cartItems as $item) {
-                $order->items()->create([
+                $order->orderItems()->create([
                     'product_id' => $item->product_id,
                     'quantity' => $item->quantity,
                     'price' => $item->product->price
                 ]);
 
                 // Reduce product stock
-                $item->product->decrement('stock', $item->quantity);
+                $item->product->decrement('stock_quantity', $item->quantity);
             }
 
             // Clear cart after order is created

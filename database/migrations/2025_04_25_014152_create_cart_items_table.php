@@ -15,17 +15,15 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
-            $table->integer('quantity');
+            $table->unsignedInteger('quantity')->default(1); // Đảm bảo quantity không âm và mặc định là 1
             $table->timestamps();
             $table->unique(['user_id', 'product_id']); // Prevent duplicate products in cart
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('cart_items');
     }
+
 };

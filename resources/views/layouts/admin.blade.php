@@ -11,29 +11,29 @@
         <!-- Sidebar -->
         <div class="bg-gray-800 text-white w-64 py-6 flex-shrink-0">
             <div class="px-6">
-                <h2 class="text-2xl font-semibold">Admin Panel</h2>
+                <h2 class="text-2xl font-semibold">Bảng điều khiển Admin</h2>
             </div>
             <nav class="mt-6">
                 <div class="px-6 py-2">
                     <a href="{{ route('admin.dashboard') }}"
                        class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 text-gray-400 hover:text-white">
-                        Dashboard
+                        Bảng điều khiển
                     </a>
                     <a href="{{ route('admin.products.index') }}"
                        class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 text-gray-400 hover:text-white">
-                        Products
+                        Sản phẩm
                     </a>
                     <a href="{{ route('admin.categories.index') }}"
                        class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 text-gray-400 hover:text-white">
-                        Categories
+                        Danh mục
                     </a>
                     <a href="{{ route('admin.orders.index') }}"
                        class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 text-gray-400 hover:text-white">
-                        Orders
+                        Đơn hàng
                     </a>
                     <a href="{{ route('admin.comparisons.index') }}"
                        class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 text-gray-400 hover:text-white">
-                        Comparisons
+                        So sánh
                     </a>
                 </div>
             </nav>
@@ -57,7 +57,7 @@
                                     <form action="{{ route('admin.logout') }}" method="POST" class="inline">
                                         @csrf
                                         <button type="submit" class="text-sm text-red-500 hover:text-red-700">
-                                            Logout
+                                            Đăng xuất
                                         </button>
                                     </form>
                                 </button>

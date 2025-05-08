@@ -69,7 +69,7 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             // Delete old image
             if ($product->image) {
-                Storage::delete('public/' . $product->image);
+                Storage::delete('products/' . $product->image, 'public');
             }
 
             // Store new image
@@ -91,7 +91,7 @@ class ProductController extends Controller
     {
         // Delete product image
         if ($product->image) {
-            Storage::delete('public/' . $product->image);
+            Storage::delete('products/' . $product->image, 'public');
         }
 
         $product->delete();

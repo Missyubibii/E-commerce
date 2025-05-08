@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('header', 'Manage Categories')
+@section('header', 'Quản lý danh mục')
 
 @section('content')
 <div class="flex justify-end mb-6">
     <a href="{{ route('admin.categories.create') }}"
        class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
-        Add New Category
+        Thêm danh mục mới
     </a>
 </div>
 
@@ -14,10 +14,10 @@
     <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
             <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Products Count</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tên</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Số lượng sản phẩm</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mô tả</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hành động</th>
             </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
@@ -34,21 +34,21 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <a href="{{ route('admin.categories.edit', $category) }}"
-                           class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                           class="text-indigo-600 hover:text-indigo-900 mr-3">Sửa</a>
                         <form action="{{ route('admin.categories.destroy', $category) }}"
                               method="POST"
                               class="inline"
-                              onsubmit="return confirm('Are you sure you want to delete this category?');">
+                              onsubmit="return confirm('Bạn có chắc chắn muốn xóa danh mục này?');">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
+                            <button type="submit" class="text-red-600 hover:text-red-900">Xóa</button>
                         </form>
                     </td>
                 </tr>
             @empty
                 <tr>
                     <td colspan="4" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                        No categories found.
+                        Không tìm thấy danh mục nào.
                     </td>
                 </tr>
             @endforelse

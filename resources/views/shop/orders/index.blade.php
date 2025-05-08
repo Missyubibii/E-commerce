@@ -49,27 +49,31 @@
                         </div>
 
                         <div class="border-t pt-4">
-                            <div class="grid gap-4">
-                                @foreach($order->items as $item)
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center">
-                                            @if($item->product->image)
-                                                <img src="{{ asset('storage/' . $item->product->image) }}"
-                                                    alt="{{ $item->product->name }}"
-                                                    class="w-16 h-16 object-cover rounded">
-                                            @endif
-                                            <div class="ml-4">
-                                                <h4 class="text-sm font-medium text-gray-900">{{ $item->product->name }}</h4>
-                                                <p class="text-sm text-gray-500">Quantity: {{ $item->quantity }}</p>
-                                            </div>
-                                        </div>
-                                        <span class="text-sm font-medium text-gray-900">
-                                            ${{ number_format($item->price * $item->quantity, 2) }}
-                                        </span>
-                                    </div>
-                                @endforeach
-                            </div>
+    <div class="grid gap-4">
+        @if(isset($order->items) && is_array($order->items) && count($order->items) > 0)
+            @foreach($order->items as $item)
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        @if($item->product->image)
+                            <img src="{{ asset('storage/' . $item->product->image) }}"
+                                alt="{{ $item->product->name }}"
+                                class="w-16 h-16 object-cover rounded">
+                        @endif
+                        <div class="ml-4">
+                            <h4 class="text-sm font-medium text-gray-900">{{ $item->product->name }}</h4>
+                            <p class="text-sm text-gray-500">Quantity: {{ $item->quantity }}</p>
                         </div>
+                    </div>
+                    <span class="text-sm font-medium text-gray-900">
+                        ${{ number_format($item->price * $item->quantity, 2) }}
+                    </span>
+                </div>
+            @endforeach
+        @else
+            <p class="text-sm text-gray-500">Không có sản phẩm nào trong đơn hàng này.</p>
+        @endif
+    </div>
+</div>
 
                         <div class="mt-6 flex justify-between items-center">
                             <div class="text-sm text-gray-600">
@@ -80,16 +84,16 @@
                             <div class="flex space-x-4">
                                 <a href="{{ route('orders.show', $order) }}"
                                     class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                    View Details
+                                    Xem chi tiết
                                 </a>
                                 @if($order->status === 'pending')
                                     <form method="POST" action="{{ route('orders.destroy', $order) }}">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            onclick="return confirm('Are you sure you want to cancel this order?')"
+                                            onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?')"
                                             class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                                            Cancel Order
+                                            Hủy đơn hàng
                                         </button>
                                     </form>
                                 @endif

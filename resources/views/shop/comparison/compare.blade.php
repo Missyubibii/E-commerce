@@ -29,7 +29,7 @@
                         @foreach($products as $product)
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($product->image)
-                                    <img src="{{ asset('storage/products/' . $product->image) }}"
+                                    <img src="{{ asset('/storage/products/' . $product->image) }}"
                                         alt="{{ $product->name }}"
                                         class="w-32 h-32 object-cover rounded-lg mx-auto">
                                 @endif
@@ -68,7 +68,7 @@
                         </th>
                         @foreach($products as $product)
                             <td class="px-6 py-4">
-                                <div class="text-lg font-bold text-gray-900">{{ number_format($product->price, 0, ',', '.') }} đ</div>
+                                <div class="text-lg font-bold text-gray-900">{{ number_format($product->price, 0, ',', '.') }}đ</div>
                             </td>
                         @endforeach
                     </tr>
