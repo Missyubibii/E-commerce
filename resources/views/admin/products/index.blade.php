@@ -16,6 +16,7 @@
             <tr>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sản Phẩm</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Danh Mục</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thương Hiệu</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giá</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tồn Kho</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thao Tác</th>
@@ -45,6 +46,9 @@
                         <div class="text-sm text-gray-900">{{ $product->category->name }}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">{{ $product->brand->name ?? 'N/A' }}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm font-medium text-gray-900">{{ number_format($product->price, 0, ',', '.') }} đ</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
@@ -68,7 +72,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                    <td colspan="6" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                         Không tìm thấy sản phẩm nào.
                     </td>
                 </tr>

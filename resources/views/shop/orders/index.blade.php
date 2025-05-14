@@ -55,9 +55,9 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
                         @if($item->product->image)
-                            <img src="{{ asset('storage/' . $item->product->image) }}"
+                            <img src="{{ asset('storage/products/' . $item->product->image) }}"
                                 alt="{{ $item->product->name }}"
-                                class="w-16 h-16 object-cover rounded">
+                                class="w-16 h-16 object-contain rounded">
                         @endif
                         <div class="ml-4">
                             <h4 class="text-sm font-medium text-gray-900">{{ $item->product->name }}</h4>

@@ -6,13 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Comparison;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ComparisonController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    use AuthorizesRequests;
 
     public function index()
     {
@@ -92,5 +90,16 @@ class ComparisonController extends Controller
         $specs = Comparison::getCommonSpecs($products);
 
         return view('shop.comparison.compare', compact('products', 'specs'));
+    }
+
+    public function add($product)
+    {
+        // Add the product to the comparison list
+        $comparison = new \App\Models\Comparison();
+        $comparison->product_id = $product;
+        $comparison->user_id = auth()->user()->id;
+        $comparison->save();
+
+        return redirect()->back()->with('success', 'Product added to comparison list.');
     }
 }

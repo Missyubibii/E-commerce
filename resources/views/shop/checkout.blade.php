@@ -26,9 +26,9 @@
                         <div class="flex justify-between items-center py-3 border-b border-gray-100 last:border-0">
                             <div class="flex items-center">
                                 @if($item->product->image)
-                                    <img src="{{ asset('storage/' . $item->product->image) }}"
+                                    <img src="{{ asset('storage/products/' . $item->product->image) }}"
                                         alt="{{ $item->product->name }}"
-                                        class="w-16 h-16 object-cover rounded-lg mr-4">
+                                        class="w-16 h-16 object-contain rounded-lg mr-4">
                                 @endif
                                 <div>
                                     <span class="font-medium text-gray-900">{{ $item->product->name }}</span>

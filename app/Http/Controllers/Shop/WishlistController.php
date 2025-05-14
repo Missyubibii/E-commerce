@@ -6,13 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class WishlistController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    use AuthorizesRequests;
 
     public function index()
     {
@@ -90,5 +88,16 @@ class WishlistController extends Controller
 
         return redirect()->route('cart.index')
             ->with('success', 'All wishlist items moved to cart');
+    }
+
+    public function add($product)
+    {
+        // Add the product to the wishlist
+        $wishlist = new \App\Models\Wishlist();
+        $wishlist->product_id = $product;
+        $wishlist->user_id = auth()->user()->id;
+        $wishlist->save();
+
+        return redirect()->back()->with('success', 'Product added to wishlist.');
     }
 }

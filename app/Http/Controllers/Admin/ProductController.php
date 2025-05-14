@@ -5,22 +5,56 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Models\Brand;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
     {
-        $products = Product::with('category')->latest()->paginate(10);
-        return view('admin.products.index', compact('products'));
+        $products = Product::query();
+
+        if ($request->has('category_id')) {
+            $products->where('category_id', $request->category_id);
+        }
+
+        if ($request->has('brand_id')) {
+            $products->where('brand_id', $request->brand_id);
+        }
+
+        if ($request->has('min_price')) {
+            $products->where('price', '>=', $request->min_price);
+        }
+
+        if ($request->has('max_price')) {
+            $products->where('price', '<=', $request->max_price);
+        }
+
+        if ($request->has('stock_status')) {
+            if ($request->stock_status == 'instock') {
+                $products->where('stock_quantity', '>', 0);
+            } else {
+                $products->where('stock_quantity', 0);
+            }
+        }
+
+        $products = $products->paginate(12);
+
+        $categories = Category::all();
+        $brands = Brand::all();
+
+        return view('admin.products.index', compact('products', 'categories', 'brands'));
     }
 
     public function create()
     {
         $categories = Category::all();
-        return view('admin.products.create', compact('categories'));
+        $brands = Brand::all();
+        return view('admin.products.create', compact('categories', 'brands'));
     }
 
     public function store(Request $request)
@@ -30,6 +64,7 @@ class ProductController extends Controller
             'description' => 'required',
             'price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'nullable|exists:brands,id',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'stock_quantity' => 'required|integer|min:0',
         ]);
@@ -42,6 +77,7 @@ class ProductController extends Controller
         }
 
         $validated['slug'] = Str::slug($validated['name']);
+        $validated['brand_id'] = $request->brand_id;
 
         Product::create($validated);
 
@@ -52,7 +88,8 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::all();
-        return view('admin.products.edit', compact('product', 'categories'));
+        $brands = Brand::all();
+        return view('admin.products.edit', compact('product', 'categories', 'brands'));
     }
 
     public function update(Request $request, Product $product)
@@ -62,6 +99,7 @@ class ProductController extends Controller
             'description' => 'required',
             'price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'nullable|exists:brands,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'stock_quantity' => 'required|integer|min:0',
         ]);
@@ -80,6 +118,7 @@ class ProductController extends Controller
         }
 
         $validated['slug'] = Str::slug($validated['name']);
+        $validated['brand_id'] = $request->brand_id;
 
         $product->update($validated);
 

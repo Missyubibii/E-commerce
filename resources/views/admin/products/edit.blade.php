@@ -69,6 +69,24 @@
         </div>
 
         <div class="mb-6">
+            <label for="brand_id" class="block text-sm font-medium text-gray-700">Thương Hiệu</label>
+            <select name="brand_id" id="brand_id"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm
+                @error('brand_id') border-red-500 @enderror">
+                <option value="">Chọn thương hiệu</option>
+                @foreach($brands as $brand)
+                    <option value="{{ $brand->id }}"
+                        {{ old('brand_id', $product->brand_id) == $brand->id ? 'selected' : '' }}>
+                        {{ $brand->name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('brand_id')
+                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="mb-6">
             <label class="block text-sm font-medium text-gray-700">Hình Ảnh Hiện Tại</label>
             <div class="mt-2">
                 @if ($product->image)

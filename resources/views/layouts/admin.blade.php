@@ -21,15 +21,23 @@
                     </a>
                     <a href="{{ route('admin.products.index') }}"
                        class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 text-gray-400 hover:text-white">
-                        Sản phẩm
+                        Quản lý sản phẩm
+                    </a>
+                    <a href="{{ route('admin.banners.index') }}"
+                       class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 text-gray-400 hover:text-white">
+                        Quản lý quảng cáo
+                    </a>
+                    <a href="{{ route('admin.brands.index') }}"
+                       class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 text-gray-400 hover:text-white">
+                        Quản lý thương hiệu
                     </a>
                     <a href="{{ route('admin.categories.index') }}"
                        class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 text-gray-400 hover:text-white">
-                        Danh mục
+                        Quản lý danh mục
                     </a>
                     <a href="{{ route('admin.orders.index') }}"
                        class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 text-gray-400 hover:text-white">
-                        Đơn hàng
+                        Quản lý đơn hàng
                     </a>
                     <a href="{{ route('admin.comparisons.index') }}"
                        class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 text-gray-400 hover:text-white">

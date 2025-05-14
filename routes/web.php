@@ -21,13 +21,14 @@ use App\Http\Controllers\Shop\ComparisonController;
 // Public routes
 Route::get('/', function () {
     $categories = \App\Models\Category::all();
+    $brands = \App\Models\Brand::all();
     $products = \App\Models\Product::when(request('category'), function($query, $category) {
         return $query->whereHas('category', function($q) use ($category) {
             $q->where('slug', $category);
         });
     })->paginate(12);
 
-    return view('welcome', compact('products', 'categories'));
+    return view('welcome', compact('products', 'categories', 'brands'));
 })->name('home');
 
 // Authentication routes
@@ -60,13 +61,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::resource('orders', AdminOrderController::class);
             Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])
                 ->name('orders.update-status');
+            Route::resource('banners', \App\Http\Controllers\Admin\BannerController::class);
+            Route::resource('brands', \App\Http\Controllers\Admin\BrandController::class);
 
             // Comparison management
             Route::get('/comparisons', [AdminComparisonController::class, 'index'])->name('comparisons.index');
-            Route::delete('/comparisons/{comparison}', [AdminComparisonController::class, 'destroy'])
-                ->name('comparisons.destroy');
-            Route::delete('/comparisons', [AdminComparisonController::class, 'clearAll'])
-                ->name('comparisons.clear-all');
+            Route::delete('/comparisons/{comparison}', [AdminComparisonController::class, 'destroy'])->name('comparisons.destroy');
+            Route::delete('/comparisons', [AdminComparisonController::class, 'clearAll'])->name('comparisons.clear-all');
         });
     });
 });
@@ -115,5 +116,13 @@ Route::middleware('auth')->group(function () {
 
     // Checkout routes
     Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
+
+    // Wishlist routes
+    Route::post('/wishlist/add/{product}', [\App\Http\Controllers\Shop\WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::get('/wishlist', [\App\Http\Controllers\Shop\WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+
+    Route::get('/products/{slug}', [\App\Http\Controllers\Shop\ProductController::class, 'show'])->name('products.show');
+    Route::get('/comparison/add/{product}', [\App\Http\Controllers\Shop\ComparisonController::class, 'add'])->name('shop.comparison.add');
+    Route::get('/wishlist/add/{product}', [\App\Http\Controllers\Shop\WishlistController::class, 'add'])->name('shop.wishlist.add');
 });

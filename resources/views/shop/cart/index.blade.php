@@ -28,9 +28,9 @@
                     <div class="flex items-center justify-between border-b border-gray-200 pb-4 hover:bg-gray-50 transition-colors duration-200 p-4 rounded-lg">
                         <div class="flex items-center">
                             @if($item->product->image)
-                                <img src="{{ asset('storage/' . $item->product->image) }}"
+                                <img src="{{ asset('storage/products/' . $item->product->image) }}"
                                     alt="{{ $item->product->name }}"
-                                    class="w-20 h-20 object-cover rounded-lg shadow-sm transform transition-transform duration-300 hover:scale-105">
+                                    class="w-20 h-20 object-contain rounded-lg shadow-sm transform transition-transform duration-300 hover:scale-105">
                             @endif
                             <div class="ml-4">
                                 <h3 class="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-150">{{ $item->product->name }}</h3>

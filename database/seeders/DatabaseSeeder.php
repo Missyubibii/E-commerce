@@ -17,13 +17,25 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Create admin user
-        User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
-            'email_verified_at' => now(),
-        ]);
+        if (!User::where('email', 'admin@email.com')->exists()) {
+            User::create([
+                'name' => 'Admin User',
+                'email' => 'admin@email.com',
+                'password' => Hash::make('123123123'),
+                'role' => 'admin',
+                'email_verified_at' => now(),
+            ]);
+        }
+
+        if (!User::where('email', 'user@email.com')->exists()) {
+            User::create([
+                'name' => 'Regular User',
+                'email' => 'user@email.com',
+                'password' => Hash::make('123123123'),
+                'role' => 'user',
+                'email_verified_at' => now(),
+            ]);
+        }
 
         // Create regular users
         User::factory(5)->create([
@@ -40,18 +52,20 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($categories as $name => $description) {
-            Category::create([
-                'name' => $name,
-                'slug' => Str::slug($name),
-                'description' => $description,
-            ]);
+            if (!Category::where('slug', Str::slug($name))->exists()) {
+                Category::create([
+                    'name' => $name,
+                    'slug' => Str::slug($name),
+                    'description' => $description,
+                ]);
+            }
         }
 
         // Create products for each category
         $categories = Category::all();
 
         foreach ($categories as $category) {
-            Product::factory(10)->create([
+            \Database\Factories\ProductFactory::new()->count(10)->create([
                 'category_id' => $category->id,
             ]);
         }
