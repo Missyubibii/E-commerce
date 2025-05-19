@@ -47,7 +47,7 @@ class OrderController extends Controller
                 ->get();
 
             if ($cartItems->isEmpty()) {
-                throw new \Exception('Your cart is empty');
+                throw new \Exception('Giỏ hàng của bạn đang trống.');
             }
 
             $total = $cartItems->sum(function($item) {
@@ -82,7 +82,7 @@ foreach ($cartItems as $item) {
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'There was a problem processing your order: ' . $e->getMessage());
+            return back()->with('error', 'Đã xảy ra vấn đề khi xử lý đơn hàng của bạn: ' . $e->getMessage());
         }
     }
 
@@ -94,6 +94,6 @@ foreach ($cartItems as $item) {
 
         $order->delete();
         return redirect()->route('orders.index')
-            ->with('success', 'Order cancelled successfully.');
+            ->with('success', 'Đơn hàng đã được hủy thành công.');
     }
 }

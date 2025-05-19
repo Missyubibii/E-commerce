@@ -22,7 +22,7 @@
                     <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                     @error('name')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600">Tên không hợp lệ.</p>
                     @enderror
                 </div>
 
@@ -31,7 +31,7 @@
                     <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" required
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                     @error('email')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600">Email không hợp lệ.</p>
                     @enderror
                 </div>
 
@@ -40,7 +40,7 @@
                     <input type="tel" name="phone" id="phone" value="{{ old('phone', $user->phone) }}"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                     @error('phone')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600">Số điện thoại không hợp lệ.</p>
                     @enderror
                 </div>
 
@@ -49,7 +49,7 @@
                     <textarea name="address" id="address" rows="3"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">{{ old('address', $user->address) }}</textarea>
                     @error('address')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600">Địa chỉ không hợp lệ.</p>
                     @enderror
                 </div>
 
@@ -62,7 +62,7 @@
                             <input type="password" name="current_password" id="current_password"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             @error('current_password')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-sm text-red-600">Mật khẩu hiện tại không đúng.</p>
                             @enderror
                         </div>
 
@@ -71,7 +71,7 @@
                             <input type="password" name="password" id="password"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             @error('password')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-sm text-red-600">Mật khẩu mới không hợp lệ.</p>
                             @enderror
                         </div>
 

@@ -9,9 +9,10 @@ use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
+
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('index');
     }
 
     public function store(Request $request, Product $product)
@@ -27,7 +28,7 @@ class ReviewController extends Controller
             ->first();
 
         if ($existingReview) {
-            return back()->with('error', 'You have already reviewed this product.');
+            return back()->with('error', 'Bạn đã đánh giá sản phẩm này rồi. Vui lòng cập nhật đánh giá của bạn thay vì tạo mới.');
         }
 
         // Create review
@@ -42,7 +43,7 @@ class ReviewController extends Controller
         $review->verified_purchase = $review->verifyPurchase();
         $review->save();
 
-        return back()->with('success', 'Thank you for your review!');
+        return back()->with('success', 'Cảm ơn bạn đã đánh giá sản phẩm!');
     }
 
     public function update(Request $request, Review $review)
@@ -62,7 +63,7 @@ class ReviewController extends Controller
             'comment' => $request->comment,
         ]);
 
-        return back()->with('success', 'Your review has been updated.');
+        return back()->with('success', 'Đánh giá của bạn đã được cập nhật!');
     }
 
     public function destroy(Review $review)
@@ -74,7 +75,7 @@ class ReviewController extends Controller
 
         $review->delete();
 
-        return back()->with('success', 'Your review has been deleted.');
+        return back()->with('success', 'Đánh giá của bạn đã được xóa!');
     }
 
     public function index(Product $product)

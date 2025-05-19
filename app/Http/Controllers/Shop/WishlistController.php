@@ -34,14 +34,14 @@ class WishlistController extends Controller
                 ->where('product_id', $product->id)
                 ->delete();
 
-            return back()->with('success', 'Product removed from wishlist');
+            return back()->with('success', 'Sản phẩm đã được xóa khỏi danh sách yêu thích.');
         } else {
             Wishlist::create([
                 'user_id' => $userId,
                 'product_id' => $product->id
             ]);
 
-            return back()->with('success', 'Product added to wishlist');
+            return back()->with('success', 'Sản phẩm đã được thêm vào danh sách yêu thích.');
         }
     }
 
@@ -53,14 +53,14 @@ class WishlistController extends Controller
 
         $wishlist->delete();
 
-        return back()->with('success', 'Product removed from wishlist');
+        return back()->with('success', 'Sản phẩm đã được xóa khỏi danh sách yêu thích.');
     }
 
     public function clear()
     {
         auth()->user()->wishlists()->delete();
 
-        return back()->with('success', 'Wishlist cleared successfully');
+        return back()->with('success', 'Danh sách yêu thích đã được xóa thành công.');
     }
 
     public function moveAllToCart()

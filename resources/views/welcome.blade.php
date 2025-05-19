@@ -1,27 +1,91 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Banner -->
-<div class="mb-8">
-    <div class="swiper mySwiper rounded-lg overflow-hidden">
-        <div class="swiper-wrapper">
-            @foreach(\App\Models\Banner::where('is_active', true)->orderBy('position')->get() as $banner)
-                <div class="swiper-slide">
-                    <a href="{{ $banner->link }}" class="block">
-                        <img src="{{ asset('img/banner/' . $banner->image) }}"
-                             alt="{{ $banner->title }}"
-                             class="w-full h-48 md:h-[30rem] object-cover">
-                    </a>
-                </div>
-            @endforeach
-        </div>
+    <!-- Banner -->
+    <div class="mb-8 relative w-full max-w-6xl mx-auto">
+        <div id="default-carousel" class="relative w-full" data-carousel="slide">
+            <!-- Carousel wrapper -->
+            <div class="relative h-64 md:h-[30rem] overflow-hidden rounded-lg flex items-center justify-center">
+                @php
+                    $banners = \App\Models\Banner::where('is_active', true)->orderBy('position')->get();
+                @endphp
 
-        <!-- Navigation + Pagination -->
-        <div class="swiper-button-prev text-white"></div>
-        <div class="swiper-button-next text-white"></div>
-        <div class="swiper-pagination"></div>
+                @if($banners->count() > 0)
+                    @foreach($banners as $banner)
+                        <div class="{{ $loop->first ? 'block' : 'hidden' }} duration-700 ease-in-out absolute inset-0 flex items-center justify-center" data-carousel-item>
+                            <a href="{{ $banner->link ?? '#' }}" class="block">
+                                <img
+                                    src="{{ asset('img/banner/' . $banner->image) }}"
+                                    alt="{{ $banner->title }}"
+                                    class="w-full h-full object-cover rounded-lg"
+                                />
+                            </a>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="text-gray-500 text-center">Không có banner nào</div>
+                @endif
+            </div>
+
+            <!-- Slider indicators -->
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3 z-30">
+                @foreach($banners as $key => $banner)
+                    <button
+                        type="button"
+                        class="w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600"
+                        aria-current="{{ $key === 0 ? 'true' : 'false' }}"
+                        aria-label="Slide {{ $key + 1 }}"
+                        data-carousel-slide-to="{{ $key }}"
+                    ></button>
+                @endforeach
+            </div>
+
+            <!-- Slider controls -->
+            <button
+                type="button"
+                class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                data-carousel-prev
+            >
+                <span
+                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/30 group-hover:bg-white/50 dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60"
+                >
+                    <svg
+                        class="w-5 h-5 text-white dark:text-gray-800"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </span>
+                <span class="sr-only">Trước</span>
+            </button>
+
+            <button
+                type="button"
+                class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                data-carousel-next
+            >
+                <span
+                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/30 group-hover:bg-white/50 dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60"
+                >
+                    <svg
+                        class="w-5 h-5 text-white dark:text-gray-800"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </span>
+                <span class="sr-only">Sau</span>
+            </button>
+        </div>
     </div>
-</div>
 
     <!-- Bộ lọc + Sản phẩm -->
     <div class="w-full px-4 md:px-12 pb-12">
@@ -80,44 +144,43 @@
 
             <!-- Danh sách sản phẩm -->
             <div class="w-full md:w-3/4">
-                <h1 class="text-2xl font-bold mb-4">Sản phẩm</h1>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     @forelse ($products as $product)
-                        <div class="border rounded-lg overflow-hidden shadow-sm bg-white">
-                            <a href="/products/{{ $product->slug }}" class="block">
-                                <img src="{{ asset('storage/products/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-48 object-contain" />
+                        <div class="border rounded-lg overflow-hidden shadow-md bg-white">
+                            <a href="{{ route('products.show', $product->slug) }}" class="block">
+                                <img src="{{ asset('storage/products/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-48 object-cover transition-transform duration-200 transform hover:scale-105" />
                             </a>
                             <div class="p-4">
-                                <a href="/products/{{ $product->slug }}" class="block">
-                                    <h2 class="text-lg font-semibold mb-1">{{ $product->name }}</h2>
+                                <a href="{{ route('products.show', $product->slug) }}" class="block">
+                                    <h2 class="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200 mb-1">{{ $product->name }}</h2>
                                 </a>
-                                <p class="text-sm text-gray-600 mb-2">{{ \Str::limit($product->description, 60) }}</p>
-                                 <p class="text-blue-600 font-bold mb-3">{{ number_format($product->price, 0, ',', '.') }} VNĐ</p>
+                                <p class="text-sm text-gray-600 line-clamp-2 mb-2">{{ $product->description }}</p>
+                                <p class="text-blue-600 font-bold mb-3">{{ number_format($product->price, 0, ',', '.') }} VNĐ</p>
                                 <div class="flex items-center justify-between">
-                                    <div class="flex">
-                                        <a href="{{ route('shop.comparison.add', $product->id) }}" class="mr-2">
+                                    <div class="flex space-x-2">
+                                        <a href="{{ route('shop.comparison.add', $product->id) }}" class="text-gray-500 hover:text-blue-600 transition-colors duration-200" title="So sánh sản phẩm">
                                             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                             </svg>
                                         </a>
-                                        <a href="{{ route('shop.wishlist.add', $product->id) }}">
+                                        <a href="{{ route('shop.wishlist.add', $product->id) }}" class="text-gray-500 hover:text-red-600 transition-colors duration-200" title="Thêm yêu thích">
                                             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 010 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                             </svg>
                                         </a>
                                     </div>
-                                    <form action="{{ route('cart.add', $product) }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="quantity" value="1">
-                                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.115 1.152-.52 2.233-1.677 2.233H5.054a1.125 1.125 0 01-1.125-1.125l1.256-12c.115-1.152.52-2.233 1.677-2.233h9.292m0 0l4.263 14.212M16.5 6.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                                            </svg>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                                     <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                                         @csrf
+                                         <input type="hidden" name="quantity" value="1">
+                                         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors duration-200">
+                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.115 1.152-.52 2.233-1.677 2.233H5.054a1.125 1.125 0 01-1.125-1.125l1.256-12c.115-1.152.52-2.233 1.677-2.233h9.292m0 0l4.263 14.212M16.5 6.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                                             </svg>
+                                         </button>
+                                     </form>
+                                 </div>
+                             </div>
+                         </div>
                     @empty
                         <p>Không có sản phẩm nào phù hợp.</p>
                     @endforelse
@@ -125,34 +188,9 @@
 
                 <!-- Phân trang -->
                 <div class="mt-6">
-                    {{ $products->appends(request()->query())->links() }}
+                    {{ $products->withQueryString()->links() }}
                 </div>
             </div>
         </div>
     </div>
-@endsection
-
-@section('styles')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-@endsection
-
-@section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script>
-        const swiper = new Swiper('.mySwiper', {
-            loop: true,
-            autoplay: {
-                delay: 4000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-        });
-    </script>
 @endsection

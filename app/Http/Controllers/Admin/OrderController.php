@@ -62,7 +62,7 @@ class OrderController extends Controller
     {
         // Additional order update logic if needed
         return redirect()->route('admin.orders.index')
-            ->with('success', 'Order updated successfully');
+            ->with('success', 'Đơn hàng đã được cập nhật thành công!');
     }
 
     /**
@@ -72,7 +72,7 @@ class OrderController extends Controller
     {
         $order->delete();
         return redirect()->route('admin.orders.index')
-            ->with('success', 'Order deleted successfully');
+            ->with('success', 'Đơn hàng đã được xóa thành công!');
     }
 
     /**
@@ -92,6 +92,6 @@ class OrderController extends Controller
         $order->updateStatus($validated['status']);
 
         return redirect()->route('admin.orders.show', $order)
-            ->with('success', 'Order status updated successfully');
+            ->with('success', 'Trạng thái đơn hàng đã được cập nhật thành công!');
     }
 }

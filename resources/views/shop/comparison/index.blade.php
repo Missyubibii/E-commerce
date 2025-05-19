@@ -85,7 +85,7 @@
                                     <span class="text-sm text-gray-500 ml-1">({{ $product->reviews_count ?? 0 }} đánh giá)</span>
                                 </div>
 
-                                <p class="mt-2 text-2xl font-bold text-gray-900">{{ number_format($product->price, 0, ',', '.') }} đ</p>
+                                <p class="mt-2 text-2xl font-bold text-gray-900">{{ number_format($product->price, 0, ',', '.') }} VNĐ</p>
 
                                 <div class="mt-4 flex justify-end">
                                     <form action="{{ route('comparison.destroy', $product->id) }}" method="POST">

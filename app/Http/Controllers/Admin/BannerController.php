@@ -42,7 +42,7 @@ class BannerController extends Controller
         $banner->save();
 
         return redirect()->route('admin.banners.index')
-            ->with('success', 'Quảng cáo đã được thêm mới.');
+            ->with('success', 'Quảng cáo đã được thêm mới!');
     }
 
     /**
@@ -91,7 +91,7 @@ class BannerController extends Controller
         $banner->save();
 
         return redirect()->route('admin.banners.index')
-            ->with('success', 'Quảng cáo đã được cập nhật.');
+            ->with('success', 'Quảng cáo đã được cập nhật!');
     }
 
     /**
@@ -102,6 +102,6 @@ class BannerController extends Controller
         $banner->delete();
 
         return redirect()->route('admin.banners.index')
-            ->with('success', 'QUảng cáo đã được xóa.');
+            ->with('success', 'Quảng cáo đã được xóa!');
     }
 }

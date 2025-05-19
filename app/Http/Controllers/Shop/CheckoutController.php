@@ -21,7 +21,7 @@ class CheckoutController extends Controller
             return view('shop.checkout', compact('cartItems', 'total'));
         } catch (\Exception $e) {
             \Log::error('Error retrieving cart items for checkout: ' . $e->getMessage());
-            return redirect()->route('cart.index')->with('error', 'Sorry, there was an error retrieving your cart items. Please try again.');
+            return redirect()->route('cart.index')->with('error', 'Xin lỗi, đã xảy ra lỗi khi lấy thông tin giỏ hàng của bạn. Vui lòng thử lại.');
         }
     }
 
@@ -42,7 +42,7 @@ class CheckoutController extends Controller
             $cartItems = CartItem::where('user_id', auth()->id())->with('product')->get();
 
             if ($cartItems->isEmpty()) {
-                return redirect()->route('cart.index')->with('error', 'Your cart is empty');
+                return redirect()->route('cart.index')->with('error', 'Giỏ hàng của bạn đang trống');
             }
 
             // Validate stock availability
@@ -87,7 +87,7 @@ class CheckoutController extends Controller
             DB::commit();
 
             return redirect()->route('orders.show', $order)
-                ->with('success', 'Order placed successfully! We will contact you to confirm the delivery.');
+                ->with('success', 'Đặt hàng thành công! Chúng tôi sẽ liên hệ với bạn để xác nhận giao hàng.');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -97,7 +97,7 @@ class CheckoutController extends Controller
                 return back()->with('error', $e->getMessage());
             }
 
-            return back()->with('error', 'Sorry, there was a problem processing your order. Our team has been notified. Please try again or contact support.');
+            return back()->with('error', 'Xin lỗi, đã xảy ra sự cố khi xử lý đơn hàng của bạn. Nhóm của chúng tôi đã được thông báo. Vui lòng thử lại hoặc liên hệ với bộ phận hỗ trợ.');
         }
     }
 }

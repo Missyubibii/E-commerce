@@ -35,6 +35,10 @@ class CartController extends Controller
      */
     public function store(Request $request, Product $product): RedirectResponse
     {
+        if ($request->method() !== 'POST') {
+            abort(405, 'Method Not Allowed');
+        }
+
         $validated = $request->validate([
             'quantity' => ['required', 'integer', 'min:1'],
         ]);
@@ -48,7 +52,7 @@ class CartController extends Controller
         $cartItem->increment('quantity', $validated['quantity']);
 
         return redirect()->route('cart.index')
-            ->with('success', 'Sản phẩm đã được thêm vào giỏ hàng thành công');
+            ->with('success', 'Sản phẩm đã được thêm vào giỏ hàng thành công!');
     }
 
     /**
@@ -65,7 +69,7 @@ class CartController extends Controller
         $cartItem->update($validated);
 
         return redirect()->route('cart.index')
-            ->with('success', 'Giỏ hàng đã được cập nhật thành công');
+            ->with('success', 'Giỏ hàng đã được cập nhật thành công!');
     }
 
     /**
@@ -73,11 +77,13 @@ class CartController extends Controller
      */
     public function destroy(CartItem $cartItem): RedirectResponse
     {
-        $this->authorize('delete', $cartItem);
+        if ($cartItem->user_id !== Auth::id()) {
+            abort(403, 'This action is unauthorized.');
+        }
 
         $cartItem->delete();
 
         return redirect()->route('cart.index')
-            ->with('success', 'Sản phẩm đã được xóa khỏi giỏ hàng thành công');
+            ->with('success', 'Sản phẩm đã được xóa khỏi giỏ hàng thành công!');
     }
 }

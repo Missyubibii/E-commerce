@@ -38,7 +38,7 @@ class BrandController extends Controller
         $brand = Brand::create($request->all());
 
         return redirect()->route('admin.brands.index')
-            ->with('success', 'Thương hiệu đã được thêm vào.');
+            ->with('success', 'Thương hiệu đã được thêm vào!');
     }
 
     /**
@@ -70,7 +70,7 @@ class BrandController extends Controller
         $brand->update($request->all());
 
         return redirect()->route('admin.brands.index')
-            ->with('success', 'Thương hiệu đã được cập nhật.');
+            ->with('success', 'Thương hiệu đã được cập nhật!');
     }
 
     /**
@@ -81,6 +81,6 @@ class BrandController extends Controller
         $brand->delete();
 
         return redirect()->route('admin.brands.index')
-            ->with('success', 'Thương hiệu đã được xóa.');
+            ->with('success', 'Thương hiệu đã được xóa!');
     }
 }

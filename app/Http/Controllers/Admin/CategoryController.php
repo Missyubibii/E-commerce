@@ -32,7 +32,7 @@ class CategoryController extends Controller
         Category::create($validated);
 
         return redirect()->route('admin.categories.index')
-            ->with('success', 'Category created successfully.');
+            ->with('success', 'Danh mục đã được tạo thành công.');
     }
 
     public function edit(Category $category)
@@ -52,18 +52,18 @@ class CategoryController extends Controller
         $category->update($validated);
 
         return redirect()->route('admin.categories.index')
-            ->with('success', 'Category updated successfully.');
+            ->with('success', 'Danh mục đã được cập nhật thành công.');
     }
 
     public function destroy(Category $category)
     {
         if ($category->products()->exists()) {
-            return back()->with('error', 'Cannot delete category that has products.');
+            return back()->with('error', 'Không thể xóa danh mục có sản phẩm.');
         }
 
         $category->delete();
 
         return redirect()->route('admin.categories.index')
-            ->with('success', 'Category deleted successfully.');
+            ->with('success', 'Danh mục đã được xóa thành công.');
     }
 }

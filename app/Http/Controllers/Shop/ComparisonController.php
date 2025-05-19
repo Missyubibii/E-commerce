@@ -34,13 +34,13 @@ class ComparisonController extends Controller
         if (Comparison::where('user_id', $userId)->where('product_id', $product->id)->exists()) {
             // Remove product from comparison
             Comparison::removeProduct($userId, $product->id);
-            $message = 'Đã xóa sản phẩm khỏi danh sách so sánh';
+            $message = 'Đã xóa sản phẩm khỏi danh sách so sánh!';
         } else {
             // Add product to comparison
             if (Comparison::addProduct($userId, $product->id)) {
-                $message = 'Đã thêm sản phẩm vào danh sách so sánh';
+                $message = 'Đã thêm sản phẩm vào danh sách so sánh!';
             } else {
-                return back()->with('error', 'Danh sách so sánh đã đầy (tối đa 4 sản phẩm)');
+                return back()->with('error', 'Danh sách so sánh đã đầy (tối đa 4 sản phẩm)!');
             }
         }
 
@@ -55,26 +55,30 @@ class ComparisonController extends Controller
 
         $comparison->delete();
 
-        return back()->with('success', 'Đã xóa sản phẩm khỏi danh sách so sánh');
+        return back()->with('success', 'Đã xóa sản phẩm khỏi danh sách so sánh!');
     }
 
     public function clear()
     {
         Comparison::clearList(auth()->id());
 
-        return back()->with('success', 'Đã xóa toàn bộ danh sách so sánh');
+        return back()->with('success', 'Đã xóa toàn bộ danh sách so sánh!');
     }
 
     public function compareNow(Request $request)
     {
+        if ($request->method() !== 'POST') {
+            abort(405, 'Method Not Allowed');
+        }
+
         $productIds = $request->get('products', []);
 
         if (count($productIds) < 2) {
-            return back()->with('error', 'Vui lòng chọn ít nhất 2 sản phẩm để so sánh');
+            return back()->with('error', 'Vui lòng chọn ít nhất 2 sản phẩm để so sánh!');
         }
 
         if (count($productIds) > 4) {
-            return back()->with('error', 'Bạn chỉ có thể so sánh tối đa 4 sản phẩm cùng lúc');
+            return back()->with('error', 'Bạn chỉ có thể so sánh tối đa 4 sản phẩm cùng lúc!');
         }
 
         $products = Product::whereIn('id', $productIds)
@@ -84,7 +88,7 @@ class ComparisonController extends Controller
             ->get();
 
         if ($products->count() !== count($productIds)) {
-            return back()->with('error', 'Không tìm thấy một hoặc nhiều sản phẩm');
+            return back()->with('error', 'Không tìm thấy một hoặc nhiều sản phẩm!');
         }
 
         $specs = Comparison::getCommonSpecs($products);
@@ -95,11 +99,11 @@ class ComparisonController extends Controller
     public function add($product)
     {
         // Add the product to the comparison list
-        $comparison = new \App\Models\Comparison();
+        $comparison = new Comparison();
         $comparison->product_id = $product;
         $comparison->user_id = auth()->user()->id;
         $comparison->save();
 
-        return redirect()->back()->with('success', 'Product added to comparison list.');
+        return redirect()->route('comparison.index')->with('success', 'Đã thêm sản phẩm vào danh sách so sánh!');
     }
 }

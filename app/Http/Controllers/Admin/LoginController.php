@@ -37,12 +37,12 @@ class LoginController extends Controller
 
             Auth::logout();
             throw ValidationException::withMessages([
-                'email' => ['You do not have admin privileges.'],
+                'email' => ['Bạn không có quyền quản trị.'],
             ]);
         }
 
         throw ValidationException::withMessages([
-            'email' => ['These credentials do not match our records.'],
+            'email' => ['Thông tin đăng nhập không chính xác.'],
         ]);
     }
 

@@ -22,7 +22,15 @@ class ProfileController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'current_password' => 'nullable|required_with:password|password',
+            'current_password' => [
+                'nullable',
+                'required_with:password',
+                function ($attribute, $value, $fail) use ($user) {
+                    if (! Hash::check($value, $user->password)) {
+                        $fail('The current password does not match.');
+                    }
+                },
+            ],
             'password' => 'nullable|min:8|confirmed',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:255',
@@ -39,6 +47,6 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return back()->with('success', 'Profile updated successfully!');
+        return back()->with('success', 'Hồ sơ đã được cập nhật thành công!');
     }
 }

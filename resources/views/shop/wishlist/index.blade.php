@@ -34,7 +34,7 @@
                         </h3>
                         <p class="text-gray-600 text-sm mb-4">{{ \Str::limit($wishlist->product->description, 60) }}</p>
                         <div class="flex items-center justify-between">
-                            <span class="text-gray-700 font-bold">${{ number_format($wishlist->product->price, 2) }}</span>
+                            <span class="text-gray-700 font-bold">{{ number_format($wishlist->product->price, 0, ',', '.') }} VNĐ</span>
                             <form action="{{ route('wishlist.toggle', $wishlist->product) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="text-red-600 hover:text-red-800">

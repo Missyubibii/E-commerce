@@ -118,11 +118,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
 
     // Wishlist routes
-    Route::post('/wishlist/add/{product}', [\App\Http\Controllers\Shop\WishlistController::class, 'toggle'])->name('wishlist.toggle');
-    Route::get('/wishlist', [\App\Http\Controllers\Shop\WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/wishlist/add/{product}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
 
     Route::get('/products/{slug}', [\App\Http\Controllers\Shop\ProductController::class, 'show'])->name('products.show');
-    Route::get('/comparison/add/{product}', [\App\Http\Controllers\Shop\ComparisonController::class, 'add'])->name('shop.comparison.add');
-    Route::get('/wishlist/add/{product}', [\App\Http\Controllers\Shop\WishlistController::class, 'add'])->name('shop.wishlist.add');
+    Route::get('/comparison/add/{product}', [ComparisonController::class, 'add'])->name('shop.comparison.add');
+    Route::get('/wishlist/add/{product}', [WishlistController::class, 'add'])->name('shop.wishlist.add');
 });

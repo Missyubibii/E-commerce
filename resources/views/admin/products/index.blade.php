@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('header', 'Manage Products')
+@section('header', 'Quản lý sản phẩm')
 
 @section('content')
 <div class="flex justify-end mb-6">

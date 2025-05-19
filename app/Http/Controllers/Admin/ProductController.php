@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
@@ -107,7 +108,7 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             // Delete old image
             if ($product->image) {
-                Storage::delete('products/' . $product->image, 'public');
+                Storage::delete('products/' . $product->image);
             }
 
             // Store new image
@@ -130,7 +131,7 @@ class ProductController extends Controller
     {
         // Delete product image
         if ($product->image) {
-            Storage::delete('products/' . $product->image, 'public');
+            Storage::delete('products/' . $product->image);
         }
 
         $product->delete();
