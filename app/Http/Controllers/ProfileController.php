@@ -27,7 +27,7 @@ class ProfileController extends Controller
                 'required_with:password',
                 function ($attribute, $value, $fail) use ($user) {
                     if (! Hash::check($value, $user->password)) {
-                        $fail('The current password does not match.');
+                        $fail('Mật khẩu hiện tại không khớp.');
                     }
                 },
             ],

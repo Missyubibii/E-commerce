@@ -15,10 +15,12 @@ class WishlistController extends Controller
     public function index()
     {
         $wishlists = auth()->user()->wishlists()
-            ->with(['product' => function($query) {
-                $query->withAvg('reviews', 'rating')
-                    ->withCount('reviews');
-            }])
+            ->with([
+                'product' => function ($query) {
+                    $query->withAvg('reviews', 'rating')
+                        ->withCount('reviews');
+                }
+            ])
             ->latest()
             ->paginate(12);
 
@@ -33,14 +35,12 @@ class WishlistController extends Controller
             Wishlist::where('user_id', $userId)
                 ->where('product_id', $product->id)
                 ->delete();
-
             return back()->with('success', 'Sản phẩm đã được xóa khỏi danh sách yêu thích.');
         } else {
             Wishlist::create([
                 'user_id' => $userId,
                 'product_id' => $product->id
             ]);
-
             return back()->with('success', 'Sản phẩm đã được thêm vào danh sách yêu thích.');
         }
     }
@@ -87,7 +87,7 @@ class WishlistController extends Controller
         auth()->user()->wishlists()->delete();
 
         return redirect()->route('cart.index')
-            ->with('success', 'All wishlist items moved to cart');
+            ->with('success', 'Tất cả sản phẩm đã được chuyển đến giỏ hàng.');
     }
 
     public function add($product)
@@ -98,6 +98,6 @@ class WishlistController extends Controller
         $wishlist->user_id = auth()->user()->id;
         $wishlist->save();
 
-        return redirect()->back()->with('success', 'Product added to wishlist.');
+        return redirect()->back()->with('success', 'Sản phẩm đã được thêm vào danh sách yêu thích.');
     }
 }

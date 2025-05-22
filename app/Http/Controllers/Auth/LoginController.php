@@ -37,7 +37,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'Thông tin đăng nhập được cung cấp không khớp với hồ sơ của chúng tôi.',
         ])->onlyInput('email');
     }
 

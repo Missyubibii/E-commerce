@@ -124,5 +124,4 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/products/{slug}', [\App\Http\Controllers\Shop\ProductController::class, 'show'])->name('products.show');
     Route::get('/comparison/add/{product}', [ComparisonController::class, 'add'])->name('shop.comparison.add');
-    Route::get('/wishlist/add/{product}', [WishlistController::class, 'add'])->name('shop.wishlist.add');
 });

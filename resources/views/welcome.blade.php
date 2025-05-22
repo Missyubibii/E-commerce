@@ -163,19 +163,23 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                             </svg>
                                         </a>
-                                        <a href="{{ route('shop.wishlist.add', $product->id) }}" class="text-gray-500 hover:text-red-600 transition-colors duration-200" title="Thêm yêu thích">
-                                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 010 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                            </svg>
-                                        </a>
+                                    <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="text-gray-500 hover:text-red-600 transition-colors duration-200" title="Thêm/Xóa yêu thích">
+                                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                        </svg>
+                                        </button>
+                                    </form>
                                     </div>
                                      <form action="{{ route('cart.add', $product->id) }}" method="POST">
                                          @csrf
                                          <input type="hidden" name="quantity" value="1">
                                          <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors duration-200">
-                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.115 1.152-.52 2.233-1.677 2.233H5.054a1.125 1.125 0 01-1.125-1.125l1.256-12c.115-1.152.52-2.233 1.677-2.233h9.292m0 0l4.263 14.212M16.5 6.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                                             </svg>
+                                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"></circle>
+                                                <circle cx="19" cy="21" r="1"></circle>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+                                            </svg>
                                          </button>
                                      </form>
                                  </div>
