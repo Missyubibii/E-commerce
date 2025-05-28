@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Đơn hàng')
+@section('title', 'Danh sách đơn hàng')
 
 @section('content')
     <div class="bg-white shadow rounded-lg">
         <div class="px-4 py-5 sm:px-6">
-            <h1 class="text-2xl font-bold text-gray-900">Đơn hàng</h1>
+            <h1 class="text-2xl font-bold text-gray-900">Danh sách đơn hàng</h1>
         </div>
 
         <div class="border-t border-gray-200">
@@ -31,7 +31,7 @@
                                 <span class="text-xs text-gray-400">{{ $order->user->email }}</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                ${{ number_format($order->total_amount, 2) }}
+                                {{ number_format($order->total_amount, 0, ',', '.') }} VNĐ
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
@@ -40,11 +40,19 @@
                                     @elseif($order->status === 'cancelled') bg-red-100 text-red-800
                                     @else bg-gray-100 text-gray-800
                                     @endif">
-                                    {{ ucfirst($order->status) }}
+                                    @if($order->status === 'completed')
+                                        Hoàn thành
+                                    @elseif($order->status === 'processing')
+                                        Đang xử lý
+                                    @elseif($order->status === 'cancelled')
+                                        Đã hủy
+                                    @else
+                                        Đang chờ xử lý
+                                    @endif
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $order->created_at->format('M d, Y H:i') }}
+                                {{ $order->created_at->format('d/m/Y H:i') }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <a href="{{ route('admin.orders.show', $order) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Xem</a>

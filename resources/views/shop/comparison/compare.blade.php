@@ -68,7 +68,7 @@
                         </th>
                         @foreach($products as $product)
                             <td class="px-6 py-4">
-                                <div class="text-lg font-bold text-gray-900">{{ number_format($product->price, 0, ',', '.') }}đ</div>
+                                <div class="text-lg font-bold text-gray-900">{{ number_format($product->price, 0, ',', '.') }}VNĐ </div>
                             </td>
                         @endforeach
                     </tr>
