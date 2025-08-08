@@ -1,22 +1,22 @@
 @extends('layouts.app')
 
-@section('title', 'My Orders')
+@section('title', 'Đơn hàng của tôi')
 
 @section('content')
 <div class="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-    <h1 class="text-3xl font-bold text-gray-900 mb-8">My Orders</h1>
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">Đơn hàng của tôi</h1>
 
     @if($orders->isEmpty())
         <div class="text-center py-12 bg-white rounded-lg shadow">
             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
-            <p class="mt-4 text-lg text-gray-600">You haven't placed any orders yet.</p>
+            <p class="mt-4 text-lg text-gray-600">Bạn chưa đặt bất kỳ đơn hàng nào.</p>
             <a href="{{ route('home') }}" class="mt-4 inline-flex items-center text-blue-600 hover:text-blue-700">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
                 </svg>
-                Continue Shopping
+                Tiếp tục mua sắm
             </a>
         </div>
     @else
@@ -27,10 +27,10 @@
                         <div class="flex items-center justify-between mb-4">
                             <div>
                                 <h3 class="text-lg font-semibold text-gray-900">
-                                    Order #{{ $order->id }}
+                                    Đơn hàng #{{ $order->id }}
                                 </h3>
                                 <p class="text-sm text-gray-500">
-                                    Placed on {{ $order->created_at->format('M d, Y') }}
+                                   Đặt vào ngày {{ $order->created_at->format('M d, Y') }}
                                 </p>
                             </div>
                             <div class="flex items-center space-x-4">
@@ -48,20 +48,18 @@
                                         Hoàn thành
                                     @elseif($order->status === 'cancelled')
                                         Đã hủy
-                                    @else
-                                        {{ ucfirst($order->status) }}
                                     @endif
                                 </span>
                                 <span class="text-lg font-bold text-gray-900">
-                                    ${{ number_format($order->total_amount, 2) }}
+                                    {{ number_format($order->total_amount, 0, ',', '.') }} VNĐ
                                 </span>
                             </div>
                         </div>
 
                         <div class="border-t pt-4">
     <div class="grid gap-4">
-        @if(isset($order->items) && is_array($order->items) && count($order->items) > 0)
-            @foreach($order->items as $item)
+        @if(isset($order->orderItems) && is_array($order->orderItems) && count($order->orderItems) > 0)
+            @foreach($order->orderItems as $item)
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
                         @if($item->product->image)
@@ -71,11 +69,11 @@
                         @endif
                         <div class="ml-4">
                             <h4 class="text-sm font-medium text-gray-900">{{ $item->product->name }}</h4>
-                            <p class="text-sm text-gray-500">Quantity: {{ $item->quantity }}</p>
+                            <p class="text-sm text-gray-500">Số lượng: {{ $item->quantity }}</p>
                         </div>
                     </div>
                     <span class="text-sm font-medium text-gray-900">
-                        ${{ number_format($item->price * $item->quantity, 2) }}
+                        {{ number_format($item->price * $item->quantity, 0, ',', '.') }} VNĐ
                     </span>
                 </div>
             @endforeach

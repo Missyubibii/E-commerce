@@ -34,7 +34,7 @@
                             @endif
                             <div class="ml-4">
                                 <h3 class="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-150">{{ $item->product->name }}</h3>
-                                <p class="text-blue-600 font-medium">{{ number_format($item->product->price, 0, ',', '.') }}đ</p>
+                                <p class="text-blue-600 font-medium">{{ number_format($item->product->price, 0, ',', '.') }} VNĐ</p>
                             </div>
                         </div>
                         <div class="flex items-center space-x-4">
@@ -67,7 +67,7 @@
                     <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 shadow-inner">
                         <div class="flex justify-between items-center">
                             <span class="text-lg font-medium text-gray-900">Tổng cộng</span>
-                            <span class="text-3xl font-bold text-blue-600">{{ number_format($total, 0, ',', '.') }}đ</span>
+                            <span class="text-3xl font-bold text-blue-600">{{ number_format($total, 0, ',', '.') }}VNĐ</span>
                         </div>
                     </div>
 
