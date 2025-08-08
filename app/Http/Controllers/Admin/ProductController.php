@@ -86,6 +86,18 @@ class ProductController extends Controller
             ->with('success', 'Product created successfully.');
     }
 
+    public function getBrandsByCategory(Request $request)
+    {
+        $categoryId = $request->input('category_id');
+        $category = Category::with('brands')->find($categoryId);
+
+        if ($category) {
+            return response()->json($category->brands);
+        }
+
+        return response()->json([]);
+    }
+
     public function edit(Product $product)
     {
         $categories = Category::all();

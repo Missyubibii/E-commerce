@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class BrandController extends Controller
@@ -13,7 +14,7 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $brands = Brand::all();
+        $brands = Brand::latest()->paginate(10);
         return view('admin.brands.index', compact('brands'));
     }
 
@@ -22,7 +23,8 @@ class BrandController extends Controller
      */
     public function create()
     {
-        return view('admin.brands.create');
+        $categories = Category::all();
+        return view('admin.brands.create', compact('categories'));
     }
 
     /**
@@ -33,9 +35,11 @@ class BrandController extends Controller
         $request->validate([
             'name' => 'required',
             'slug' => 'required|unique:brands',
+            'category_id' => 'required|array',
         ]);
 
-        $brand = Brand::create($request->all());
+        $brand = Brand::create($request->only('name', 'slug'));
+        $brand->categories()->attach($request->category_id);
 
         return redirect()->route('admin.brands.index')
             ->with('success', 'Thương hiệu đã được thêm vào!');
@@ -54,7 +58,9 @@ class BrandController extends Controller
      */
     public function edit(Brand $brand)
     {
-        return view('admin.brands.edit', compact('brand'));
+        $categories = Category::all();
+        $brand->load('categories');
+        return view('admin.brands.edit', compact('brand', 'categories'));
     }
 
     /**
@@ -65,9 +71,11 @@ class BrandController extends Controller
         $request->validate([
             'name' => 'required',
             'slug' => 'required|unique:brands,slug,' . $brand->id,
+            'category_id' => 'required|array',
         ]);
 
-        $brand->update($request->all());
+        $brand->update($request->only('name', 'slug'));
+        $brand->categories()->sync($request->category_id);
 
         return redirect()->route('admin.brands.index')
             ->with('success', 'Thương hiệu đã được cập nhật!');

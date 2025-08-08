@@ -13,13 +13,13 @@ class AdminMiddleware
         // Check if user is logged in
         if (!Auth::check()) {
             return redirect()->route('admin.login')
-                ->with('error', 'Please login as admin to continue.');
+                ->with('error', 'Vui lòng đăng nhập với tư cách quản trị viên để tiếp tục.');
         }
 
         // Check if user is admin
         if (!Auth::user()->isAdmin()) {
             return redirect()->route('admin.login')
-                ->with('error', 'You do not have admin privileges.');
+                ->with('error', 'Bạn không có quyền quản trị viên.');
         }
 
         return $next($request);

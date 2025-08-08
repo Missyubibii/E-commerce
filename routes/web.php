@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ComparisonController as AdminComparisonController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Shop\CartController;
 use App\Http\Controllers\Shop\OrderController as ShopOrderController;
 use App\Http\Controllers\Auth\LoginController;
@@ -17,8 +18,10 @@ use App\Http\Controllers\Shop\ReviewController;
 use App\Http\Controllers\Shop\SearchController;
 use App\Http\Controllers\Shop\WishlistController;
 use App\Http\Controllers\Shop\ComparisonController;
+use App\Http\Controllers\Shop\ProductController as ShopProductController;
 
 // Public routes
+Route::get('/categories/{category}/brands', [ShopProductController::class, 'getBrandsByCategory']);
 Route::get('/', function () {
     $categories = \App\Models\Category::all();
     $brands = \App\Models\Brand::all();
@@ -63,6 +66,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 ->name('orders.update-status');
             Route::resource('banners', \App\Http\Controllers\Admin\BannerController::class);
             Route::resource('brands', \App\Http\Controllers\Admin\BrandController::class);
+            Route::resource('users', UserController::class);
+            Route::get('/products/get-brands-by-category', [ProductController::class, 'getBrandsByCategory'])->name('products.getBrandsByCategory');
 
             // Comparison management
             Route::get('/comparisons', [AdminComparisonController::class, 'index'])->name('comparisons.index');

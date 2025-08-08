@@ -53,4 +53,9 @@ class ProductController extends Controller
         $product = Product::where('slug', $slug)->firstOrFail();
         return view('shop.products.show', compact('product'));
     }
+
+    public function getBrandsByCategory(Category $category)
+    {
+        return response()->json($category->brands);
+    }
 }

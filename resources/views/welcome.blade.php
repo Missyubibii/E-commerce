@@ -198,3 +198,26 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.getElementById('category').addEventListener('change', function () {
+        const categoryId = this.value;
+        const brandSelect = document.getElementById('brand_id');
+        brandSelect.innerHTML = '<option value="">Tất cả</option>';
+
+        if (categoryId) {
+            fetch(`/categories/${categoryId}/brands`)
+                .then(response => response.json())
+                .then(brands => {
+                    brands.forEach(brand => {
+                        const option = document.createElement('option');
+                        option.value = brand.id;
+                        option.textContent = brand.name;
+                        brandSelect.appendChild(option);
+                    });
+                });
+        }
+    });
+</script>
+@endpush

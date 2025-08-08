@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - E-commerce</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        .content-fade-enter {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .content-fade-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
     <div class="min-h-screen flex">
@@ -38,6 +49,10 @@
                     <a href="{{ route('admin.orders.index') }}"
                        class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 text-gray-400 hover:text-white">
                         Quản lý đơn hàng
+                    </a>
+                    <a href="{{ route('admin.users.index') }}"
+                       class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 text-gray-400 hover:text-white">
+                        Quản lý người dùng
                     </a>
                     <a href="{{ route('admin.comparisons.index') }}"
                        class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 text-gray-400 hover:text-white">
@@ -77,7 +92,7 @@
 
             <!-- Page Content -->
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
-                <div class="container mx-auto px-6 py-8">
+                <div class="container mx-auto px-6 py-8 content-fade-enter" id="page-content">
                     @if (session('success'))
                         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
                             <span class="block sm:inline">{{ session('success') }}</span>
@@ -95,5 +110,14 @@
             </main>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const content = document.getElementById('page-content');
+            // Use requestAnimationFrame to ensure the class is added after the initial render
+            requestAnimationFrame(() => {
+                content.classList.add('content-fade-enter-active');
+            });
+        });
+    </script>
 </body>
 </html>

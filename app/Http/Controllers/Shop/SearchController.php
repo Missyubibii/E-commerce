@@ -13,6 +13,7 @@ class SearchController extends Controller
     {
         $query = $request->get('q');
         $categoryId = $request->get('category');
+        $brandId = $request->get('brand_id');
         $minPrice = $request->get('min_price');
         $maxPrice = $request->get('max_price');
         $sort = $request->get('sort', 'default');
@@ -22,6 +23,7 @@ class SearchController extends Controller
                 return $q->search($query);
             })
             ->filterByCategory($categoryId)
+            ->filterByBrand($brandId)
             ->filterByPrice($minPrice, $maxPrice);
 
         // Apply sorting
@@ -61,6 +63,7 @@ class SearchController extends Controller
             'priceRange',
             'query',
             'categoryId',
+            'brandId',
             'minPrice',
             'maxPrice',
             'sort'

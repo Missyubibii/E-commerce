@@ -15,7 +15,7 @@ class BannerController extends Controller
      */
     public function index()
     {
-        $banners = Banner::all();
+        $banners = Banner::latest()->paginate(10);
         return view('admin.banners.index', compact('banners'));
     }
 
@@ -24,22 +24,21 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'image' => 'required',
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'link' => 'nullable|url',
-            'is_active' => 'boolean',
-            'position' => 'integer',
+            'is_active' => 'required|boolean',
+            'position' => 'required|integer',
         ]);
 
-        $banner = new Banner();
-        $banner->title = $request->title;
-        $banner->link = $request->link;
-        $banner->is_active = $request->is_active;
-        $banner->position = $request->position;
-        $banner->image = str_replace('img/banner/', '', $request->image);
+        if ($request->hasFile('image')) {
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('img/banner'), $imageName);
+            $data['image'] = $imageName;
+        }
 
-        $banner->save();
+        Banner::create($data);
 
         return redirect()->route('admin.banners.index')
             ->with('success', 'Quảng cáo đã được thêm mới!');
@@ -74,21 +73,26 @@ class BannerController extends Controller
      */
     public function update(Request $request, Banner $banner)
     {
-        $request->validate([
-            'title' => 'required',
-            'image' => 'required',
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'link' => 'nullable|url',
-            'is_active' => 'boolean',
-            'position' => 'integer',
+            'is_active' => 'required|boolean',
+            'position' => 'required|integer',
         ]);
 
-        $banner->title = $request->title;
-        $banner->link = $request->link;
-        $banner->is_active = $request->is_active;
-        $banner->position = $request->position;
-        $banner->image = $request->image;
+        if ($request->hasFile('image')) {
+            // Delete old image
+            if ($banner->image && file_exists(public_path('img/banner/' . $banner->image))) {
+                unlink(public_path('img/banner/' . $banner->image));
+            }
 
-        $banner->save();
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('img/banner'), $imageName);
+            $data['image'] = $imageName;
+        }
+
+        $banner->update($data);
 
         return redirect()->route('admin.banners.index')
             ->with('success', 'Quảng cáo đã được cập nhật!');

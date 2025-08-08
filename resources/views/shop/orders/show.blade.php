@@ -10,17 +10,27 @@
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 pb-6 border-b border-blue-200">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-900 mb-2">Đơn hàng số {{ $order->id }}</h1>
-                    <p class="text-sm text-gray-600">Đặt vào ngày {{ $order->created_at->format('F d, Y \a\t h:i A') }}</p>
+                    <p class="text-sm text-gray-600">đặt vào ngày {{ $order->created_at->format('d/m/Y \l\ú\c H:i') }}</p>
                 </div>
                 <div class="mt-4 sm:mt-0">
-                    <span class="px-4 py-2 rounded-full text-sm font-semibold
-                        @if($order->status === 'pending') bg-yellow-100 text-yellow-800
-                        @elseif($order->status === 'processing') bg-blue-100 text-blue-800
-                        @elseif($order->status === 'completed') bg-green-100 text-green-800
-                        @elseif($order->status === 'cancelled') bg-red-100 text-red-800
-                        @endif">
+                <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full
+                    @if($order->status === 'completed') bg-green-100 text-green-800
+                    @elseif($order->status === 'processing') bg-yellow-100 text-yellow-800
+                    @elseif($order->status === 'cancelled') bg-red-100 text-red-800
+                    @else bg-gray-100 text-gray-800
+                    @endif">
+                    @if($order->status === 'pending')
+                        Đang chờ xử lý
+                    @elseif($order->status === 'processing')
+                        Đang xử lý
+                    @elseif($order->status === 'completed')
+                        Hoàn thành
+                    @elseif($order->status === 'cancelled')
+                        Đã hủy
+                    @else
                         {{ ucfirst($order->status) }}
-                    </span>
+                    @endif
+                </span>
                 </div>
             </div>
 
@@ -39,11 +49,11 @@
                                     @endif
                                     <div class="ml-4">
                                         <h3 class="text-lg font-medium text-gray-900">{{ $item->product->name }}</h3>
-                                        <p class="text-gray-600">Quantity: {{ $item->quantity }} × ${{ number_format($item->price, 2) }}</p>
+                                        <p class="text-gray-600">Quantity: {{ $item->quantity }} × {{ number_format($item->price, 2) }}đ</p>
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <span class="text-lg font-bold text-gray-900">${{ number_format($item->price * $item->quantity, 2) }}</span>
+                                    <span class="text-lg font-bold text-gray-900">{{ number_format($item->price * $item->quantity, 2) }}đ</span>
                                 </div>
                             </div>
                         @endforeach
@@ -87,7 +97,7 @@
                             </div>
                             <div class="flex justify-between mb-2">
                                 <span class="text-gray-600">Phí giao hàng:</span>
-                                <span class="text-gray-900">$0.00</span>
+                                <span class="text-gray-900">0đ</span>
                             </div>
                             <div class="flex justify-between font-bold text-lg border-t border-gray-200 pt-4">
                                 <span>Tổng cộng:</span>

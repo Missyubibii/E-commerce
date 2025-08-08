@@ -106,4 +106,53 @@
         </div>
     </form>
 </div>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const categorySelect = document.getElementById('category_id');
+        const brandSelect = document.getElementById('brand_id');
+        const initialBrandId = "{{ old('brand_id') }}";
+
+        function loadBrands(categoryId) {
+            if (categoryId) {
+                fetch(`/admin/products/get-brands-by-category?category_id=${categoryId}`)
+                    .then(response => response.json())
+                    .then(brands => {
+                        brandSelect.innerHTML = '<option value="">Chọn thương hiệu</option>';
+                        brands.forEach(brand => {
+                            const option = document.createElement('option');
+                            option.value = brand.id;
+                            option.textContent = brand.name;
+                            if (initialBrandId && brand.id == initialBrandId) {
+                                option.selected = true;
+                            }
+                            brandSelect.appendChild(option);
+                        });
+                        brandSelect.disabled = false;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching brands:', error);
+                        brandSelect.innerHTML = '<option value="">Không thể tải thương hiệu</option>';
+                        brandSelect.disabled = true;
+                    });
+            } else {
+                brandSelect.innerHTML = '<option value="">Chọn thương hiệu</option>';
+                brandSelect.disabled = true;
+            }
+        }
+
+        // Load brands on page load if a category was previously selected (e.g., due to validation error)
+        if (categorySelect.value) {
+            loadBrands(categorySelect.value);
+        } else {
+            brandSelect.disabled = true; // Disable brand select initially if no category is selected
+        }
+
+        categorySelect.addEventListener('change', function () {
+            loadBrands(this.value);
+        });
+    });
+</script>
+@endpush
 @endsection

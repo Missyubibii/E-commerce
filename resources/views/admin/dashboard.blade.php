@@ -97,23 +97,35 @@
             <tbody class="bg-white divide-y divide-gray-200">
                 @foreach(\App\Models\Order::latest()->take(5)->get() as $order)
                 <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#{{ $order->id }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $order->id }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm font-medium text-gray-900">{{ $order->user->name }}</div>
                         <div class="text-sm text-gray-500">{{ $order->user->email }}</div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ number_format($order->total, 2) }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ number_format($order->total_amount, 2) }}đ</td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                            @if($order->status === 'pending') bg-yellow-100 text-yellow-800
-                            @elseif($order->status === 'processing') bg-blue-100 text-blue-800
-                            @elseif($order->status === 'completed') bg-green-100 text-green-800
-                            @else bg-red-100 text-red-800 @endif">
-                            {{ ucfirst($order->status) }}
-                        </span>
+                <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full
+                    @if($order->status === 'completed') bg-green-100 text-green-800
+                    @elseif($order->status === 'processing') bg-yellow-100 text-yellow-800
+                    @elseif($order->status === 'cancelled') bg-red-100 text-red-800
+                    @else bg-gray-100 text-gray-800
+                    @endif">
+
+                    @if($order->status === 'pending')
+                        Đang chờ xử lý
+                    @elseif($order->status === 'processing')
+                        Đang xử lý
+                    @elseif($order->status === 'completed')
+                        Hoàn thành
+                    @elseif($order->status === 'cancelled')
+                        Đã hủy
+                    @else
+                        {{ ucfirst($order->status) }}
+                    @endif
+                </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {{ $order->created_at->format('M d, Y') }}
+                        {{ $order->created_at->format('d/m/Y') }}
                     </td>
                 </tr>
                 @endforeach

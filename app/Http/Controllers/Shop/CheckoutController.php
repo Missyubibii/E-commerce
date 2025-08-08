@@ -49,7 +49,7 @@ class CheckoutController extends Controller
             foreach ($cartItems as $item) {
                 \Log::info("Product: {$item->product->name}, Stock: {$item->product->stock_quantity}, Quantity: {$item->quantity}");
                 if ($item->quantity > $item->product->stock_quantity) {
-                    throw new \Exception("Sorry, '{$item->product->name}' only has {$item->product->stock_quantity} items in stock.");
+                    throw new \Exception("Xin lỗi, sản phẩm '{$item->product->name}' chỉ còn {$item->product->stock_quantity} sản phẩm trong kho.");
                 }
             }
 

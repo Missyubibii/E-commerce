@@ -112,6 +112,15 @@ class Product extends Model
         return $query;
     }
 
+    // Filter by brand
+    public function scopeFilterByBrand($query, $brandId)
+    {
+        if ($brandId) {
+            return $query->where('brand_id', $brandId);
+        }
+        return $query;
+    }
+
     // Get average rating
     public function getAverageRatingAttribute()
     {

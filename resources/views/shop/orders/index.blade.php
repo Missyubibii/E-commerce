@@ -34,13 +34,23 @@
                                 </p>
                             </div>
                             <div class="flex items-center space-x-4">
-                                <span class="px-3 py-1 rounded-full text-sm font-medium
-                                    @if($order->status === 'pending') bg-yellow-100 text-yellow-800
-                                    @elseif($order->status === 'processing') bg-blue-100 text-blue-800
-                                    @elseif($order->status === 'completed') bg-green-100 text-green-800
+                                <span class="px-3 py-1 rounded-full text-sm font-semibold
+                                    @if($order->status === 'completed') bg-green-100 text-green-800
+                                    @elseif($order->status === 'processing') bg-yellow-100 text-yellow-800
                                     @elseif($order->status === 'cancelled') bg-red-100 text-red-800
+                                    @else bg-blue-100 text-blue-800
                                     @endif">
-                                    {{ ucfirst($order->status) }}
+                                    @if($order->status === 'pending')
+                                        Đang chờ xử lý
+                                    @elseif($order->status === 'processing')
+                                        Đang xử lý
+                                    @elseif($order->status === 'completed')
+                                        Hoàn thành
+                                    @elseif($order->status === 'cancelled')
+                                        Đã hủy
+                                    @else
+                                        {{ ucfirst($order->status) }}
+                                    @endif
                                 </span>
                                 <span class="text-lg font-bold text-gray-900">
                                     ${{ number_format($order->total_amount, 2) }}

@@ -78,7 +78,7 @@ foreach ($cartItems as $item) {
             DB::commit();
 
             return redirect()->route('orders.show', $order)
-                ->with('success', 'Order placed successfully!');
+                ->with('success', 'Đặt hàng thành công!');
 
         } catch (\Exception $e) {
             DB::rollBack();

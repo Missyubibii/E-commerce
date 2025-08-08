@@ -23,17 +23,22 @@
 
                     <!-- Categories -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Danh mục</label>
-                        <div class="space-y-2">
+                        <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Danh mục</label>
+                        <select name="category" id="category" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            <option value="">Tất cả</option>
                             @foreach($categories as $category)
-                                <div class="flex items-center">
-                                    <input type="radio" name="category" value="{{ $category->id }}"
-                                        {{ $categoryId == $category->id ? 'checked' : '' }}
-                                        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                                    <label class="ml-2 text-sm text-gray-700">{{ $category->name }}</label>
-                                </div>
+                                <option value="{{ $category->id }}" {{ $categoryId == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                             @endforeach
-                        </div>
+                        </select>
+                    </div>
+
+                    <!-- Brands -->
+                    <div>
+                        <label for="brand_id" class="block text-sm font-medium text-gray-700 mb-2">Thương hiệu</label>
+                        <select name="brand_id" id="brand_id" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            <option value="">Tất cả</option>
+                            {{-- Brands will be populated by JavaScript --}}
+                        </select>
                     </div>
 
                     <!-- Price Range -->
@@ -163,11 +168,50 @@
 
 @section('scripts')
     <script>
-        const filterButton = document.getElementById('filter-button');
-        const filterSidebar = document.getElementById('filter-sidebar-content');
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterButton = document.getElementById('filter-button');
+            const filterSidebar = document.getElementById('filter-sidebar-content');
+            const categorySelect = document.getElementById('category');
+            const brandSelect = document.getElementById('brand_id');
+            const selectedBrandId = "{{ request('brand_id') }}";
 
-        filterButton.addEventListener('click', () => {
-            filterSidebar.classList.toggle('hidden');
+            filterButton.addEventListener('click', () => {
+                // Toggle visibility
+                if (filterSidebar.style.display === 'none' || filterSidebar.style.display === '') {
+                    filterSidebar.style.display = 'block';
+                } else {
+                    filterSidebar.style.display = 'none';
+                }
+            });
+
+            function fetchBrands(categoryId, selectedBrand = null) {
+                brandSelect.innerHTML = '<option value="">Tất cả</option>';
+                if (!categoryId) return;
+
+                fetch(`/categories/${categoryId}/brands`)
+                    .then(response => response.json())
+                    .then(brands => {
+                        brands.forEach(brand => {
+                            const option = document.createElement('option');
+                            option.value = brand.id;
+                            option.textContent = brand.name;
+                            if (selectedBrand && brand.id == selectedBrand) {
+                                option.selected = true;
+                            }
+                            brandSelect.appendChild(option);
+                        });
+                    });
+            }
+
+            // Fetch brands on page load if a category is already selected
+            if (categorySelect.value) {
+                fetchBrands(categorySelect.value, selectedBrandId);
+            }
+
+            // Fetch brands when category changes
+            categorySelect.addEventListener('change', function () {
+                fetchBrands(this.value);
+            });
         });
     </script>
 @endsection

@@ -1,27 +1,49 @@
 @extends('layouts.admin')
 
+@section('header', 'Chỉnh sửa thương hiệu')
+
 @section('content')
-    <div class="container mx-auto">
-        <h1 class="text-2xl font-semibold mb-4">Sửa Thương hiệu</h1>
-        <form action="{{ route('admin.brands.update', $brand->id) }}" method="POST">
-            @csrf
-            @method('PUT')
-            <div class="mb-4">
-                <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Tên:</label>
-                <input type="text" name="name" id="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="{{ $brand->name }}">
+<div class="bg-white p-8 rounded-lg shadow-md">
+    <form action="{{ route('admin.brands.update', $brand) }}" method="POST">
+        @csrf
+        @method('PUT')
+        <div class="space-y-6">
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Tên thương hiệu</label>
+                <input type="text" name="name" id="name" value="{{ old('name', $brand->name) }}" required
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
-            <div class="mb-4">
-                <label for="slug" class="block text-gray-700 text-sm font-bold mb-2">Slug:</label>
-                <input type="text" name="slug" id="slug" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="{{ $brand->slug }}">
+
+            <div>
+                <label for="slug" class="block text-sm font-medium text-gray-700">Slug</label>
+                <input type="text" name="slug" id="slug" value="{{ old('slug', $brand->slug) }}"
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                @error('slug') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
-            <div class="flex items-center justify-between">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                    Cập nhật
-                </button>
-                <a href="{{ route('admin.brands.index') }}" class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
-                    Hủy
-                </a>
+
+            <div>
+                <label for="category_id" class="block text-sm font-medium text-gray-700">Danh mục</label>
+                <select name="category_id[]" id="category_id" multiple
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" {{ $brand->categories->contains($category->id) ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('category_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
-        </form>
-    </div>
+        </div>
+
+        <div class="mt-8 flex justify-end space-x-3">
+            <a href="{{ route('admin.brands.index') }}" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors duration-300">
+                Hủy
+            </a>
+            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors duration-300">
+                Cập nhật thương hiệu
+            </button>
+        </div>
+    </form>
+</div>
 @endsection
